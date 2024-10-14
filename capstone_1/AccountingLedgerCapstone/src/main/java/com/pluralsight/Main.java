@@ -60,11 +60,21 @@ public class Main {
         }
     }
 
-    public static void main(String[] args) {
+    public static void main(String[] args) throws IOException {
 
         boolean ledger = true;
 
         while (ledger) {
+
+            createEntries();
+            String userInput = homeScreen;
+            scanner.nextLine();
+
+            switch (userInput){
+                case "1":
+            }
+
+
 
 
         }
