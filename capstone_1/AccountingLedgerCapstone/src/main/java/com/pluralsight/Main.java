@@ -1,84 +1,109 @@
 package com.pluralsight;
 
 import java.io.*;
+import java.time.LocalDateTime;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+import java.util.ArrayList;
 import java.util.Scanner;
+import java.time.LocalDate;
 
 public class Main {
 
-    FileWriter fileWriter = new FileWriter();
-    BufferedWriter buffWriter = new BufferedWriter(fileWriter);
+
     private static Scanner scanner;
+    static ArrayList<Transaction> accountLedger = new ArrayList<>();
+    static LocalDateTime dateTime = LocalDateTime.now();
+    static DateTimeFormatter fmtDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    static DateTimeFormatter fmtTime = DateTimeFormatter.ofPattern("HH:mm:ss");
 
 
-    public static void printPrompt(String p) {
-        System.out.println(p);
+    public Main() throws IOException {
     }
-    private static String homeScreen = """
-            =======================================
-               Welcome to the Accounting Ledger
-            =======================================
-            1. Add Deposit
-            2. Make Payment
-            3. Ledger
-            4. Exit
-            """;
-    private static String ledger = """
-            ===========================
-                      Ledger
-            ===========================
-            1. All
-            2. Deposits
-            3. Payments
-            4. Reports
-            5. Back to Home Screen
-            """;
-    private static String reports = """
-            ===========================
-                      Reports
-            ===========================
-            1. Month to Date
-            2. Previous Month
-            3. Year to Date
-            4. Previous Month
-            5. Search by Vendor
-            0. Back
-            """;
-    private static void createEntries() throws IOException {
-        FileReader fileReader = new FileReader();
+
+
+    private static void createTransactions() throws IOException {
+        FileReader fileReader = new FileReader("transactions.csv");
         BufferedReader buffReader = new BufferedReader(fileReader);
 
         String input;
-        while ((input = buffReader.readLine()) != null){
+        while ((input = buffReader.readLine()) != null) {
             String[] entry = input.split("\\|");
             String date = entry[0];
             String time = entry[1];
             String description = entry[2];
             String vendor = entry[3];
-            String amount = entry[4];
-            Ledger ledgerEntries = new Ledger(date, time, description, vendor, amount);
-
+            Double amount = Double.parseDouble(entry[4]);
+            Transaction transaction = new Transaction(LocalDate.parse(date, fmtDate), LocalTime.parse(time, fmtTime), description, vendor, amount);
+            accountLedger.add(transaction);
         }
     }
 
     public static void main(String[] args) throws IOException {
+        FileWriter fileWriter = new FileWriter("transactions.csv");
+        BufferedWriter buffWriter = new BufferedWriter(fileWriter);
+        Scanner scanner = new Scanner(System.in);
 
-        boolean ledger = true;
 
-        while (ledger) {
+        boolean ledgerRunning = true;
+        createTransactions(); // loading transactions from csv file.
+        Prompts.printPrompt(Prompts.homeScreen); // prints home screen
+        String userInput = scanner.nextLine(); // get user input
 
-            createEntries();
-            String userInput = homeScreen;
-            scanner.nextLine();
+        while (ledgerRunning) {
+            switch (userInput) {
+                case "D", "d":
+                    Prompts.printPrompt(Prompts.addDepositDescription);
+                    String d = scanner.nextLine();
+                    Prompts.printPrompt(Prompts.addDepositAmount);
+                    double a = scanner.nextDouble();
+                    scanner.nextLine();
+                    Prompts.printPrompt(Prompts.addDepositVendor);
+                    String v = scanner.nextLine();
+                    LocalDateTime dateTime = LocalDateTime.now();
+                    Transaction deposit = new Transaction(dateTime.toLocalDate(), dateTime.toLocalTime(), d, v, a);
+                    accountLedger.add(deposit);
+                    buffWriter.write(deposit.toString() + "\n"); //this depends on transaction having a toString method
+                    buffWriter.flush();
+                    System.out.println("your deposit has been successfully added!");
+                    break;
+                case "P", "p":
+                    Prompts.printPrompt(Prompts.makePaymentDescription);
+                    String dp = scanner.nextLine();
+                    Prompts.printPrompt(Prompts.makePaymentAmount);
+                    double ap = scanner.nextDouble();
+                    scanner.nextLine();
+                    Prompts.printPrompt(Prompts.addPaymentVendor);
+                    String vp = scanner.nextLine();
+                    LocalDateTime dateTimePay = LocalDateTime.now();
+                    Transaction payment = new Transaction(dateTimePay.toLocalDate(), dateTimePay.toLocalTime(), dp, vp, ap);
+                    accountLedger.add(payment);
+                    buffWriter.write(payment.toString() + "\n");
+                    buffWriter.flush();
+                    System.out.println("Your payment has been successfully added!");
+                    break;
+                case "L", "l":
+                    boolean inLedger = true;
+                    while (inLedger) {
+                        Prompts.printPrompt(Prompts.ledger);
+                        String ledgerInput = scanner.nextLine();
+                        if (ledgerInput.equalsIgnoreCase("a")) {
+                            for (Transaction ledger : accountLedger) {
+                                System.out.println(Prompts.ledger);
+                            }
+                        }
 
-            switch (userInput){
-                case "1":
+                        System.out.println("Enter X to back to home Screen");
+                        String exit = scanner.nextLine();
+                        if (exit.equalsIgnoreCase("x")) {
+                            inLedger = false;
+                        }
+                    }
+                    break;
+                default:
+                    System.out.println("Invalid input try again");
             }
-
-
-
-
+            buffWriter.close();
         }
-
-
     }
 }

@@ -1,13 +1,17 @@
 package com.pluralsight;
 
-public class Ledger {
-    String time;
-    String date;
+import java.time.LocalDate;
+import java.time.LocalTime;
+import java.time.format.DateTimeFormatter;
+
+public class Transaction {
+    LocalTime time;
+    LocalDate date;
     String description;
     String vendor;
     double amount;
 
-    public Ledger(String time, String date, String description, String vendor, double amount) {
+    public Transaction(LocalDate date, LocalTime time, String description, String vendor, double amount) {
         this.time = time;
         this.date = date;
         this.description = description;
@@ -15,19 +19,19 @@ public class Ledger {
         this.amount = amount;
     }
 
-    public String getTime() {
+    public LocalTime getTime() {
         return time;
     }
 
-    public void setTime(String time) {
+    public void setTime(LocalTime time) {
         this.time = time;
     }
 
-    public String getDate() {
+    public LocalDate getDate() {
         return date;
     }
 
-    public void setDate(String date) {
+    public void setDate(LocalDate date) {
         this.date = date;
     }
 
@@ -54,5 +58,12 @@ public class Ledger {
     public void setAmount(double amount) {
         this.amount = amount;
     }
+
+    @Override
+    public String toString() {
+        return String.format("Date: %s | Time: %s | Description %s | Vendor: %s | Amount: $%.2f", fmtDate.format(date), fmtTime.format(time), description, vendor, amount);
+    }
+    static DateTimeFormatter fmtDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
+    static DateTimeFormatter fmtTime = DateTimeFormatter.ofPattern("HH:mm:ss");
 }
 
