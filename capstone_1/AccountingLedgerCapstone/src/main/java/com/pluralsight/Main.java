@@ -48,9 +48,11 @@ public class Main {
         boolean ledgerRunning = true;
         createTransactions(); // loading transactions from csv file.
         Prompts.printPrompt(Prompts.homeScreen); // prints home screen
-        String userInput = scanner.nextLine(); // get user input
+
 
         while (ledgerRunning) {
+            String userInput = scanner.nextLine(); // get user input
+
             switch (userInput) {
                 case "D", "d":
                     Prompts.printPrompt(Prompts.addDepositDescription);
@@ -76,7 +78,7 @@ public class Main {
                     Prompts.printPrompt(Prompts.addPaymentVendor);
                     String vp = scanner.nextLine();
                     LocalDateTime dateTimePay = LocalDateTime.now();
-                    Transaction payment = new Transaction(dateTimePay.toLocalDate(), dateTimePay.toLocalTime(), dp, vp, ap);
+                    Transaction payment = new Transaction(dateTimePay.toLocalDate(), dateTimePay.toLocalTime(), dp, vp, "-"ap);
                     accountLedger.add(payment);
                     buffWriter.write(payment.toString() + "\n");
                     buffWriter.flush();
@@ -92,8 +94,12 @@ public class Main {
                                 System.out.println(Prompts.ledger);
                             }
                         }
+                        if (accountLedger.isEmpty()) {
+                            System.out.println(" Oh no! your ledger is empty");
+                            inLedger = false;
+                        }
 
-                        System.out.println("Enter X to back to home Screen");
+                        System.out.println("\nEnter X to back to home Screen");
                         String exit = scanner.nextLine();
                         if (exit.equalsIgnoreCase("x")) {
                             inLedger = false;

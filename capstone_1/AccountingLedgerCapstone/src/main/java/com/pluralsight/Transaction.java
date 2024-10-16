@@ -61,7 +61,7 @@ public class Transaction {
 
     @Override
     public String toString() {
-        return String.format("Date: %s | Time: %s | Description %s | Vendor: %s | Amount: $%.2f", fmtDate.format(date), fmtTime.format(time), description, vendor, amount);
+        return String.format("Date: %s | Time: %s | Description: %s | Vendor: %s | Amount: $%.2f", fmtDate.format(date), fmtTime.format(time), description, vendor, amount);
     }
     static DateTimeFormatter fmtDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     static DateTimeFormatter fmtTime = DateTimeFormatter.ofPattern("HH:mm:ss");
