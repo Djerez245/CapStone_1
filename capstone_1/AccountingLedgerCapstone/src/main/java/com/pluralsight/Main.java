@@ -66,7 +66,6 @@ public class Main {
                     Transaction deposit = new Transaction(dateTime.toLocalDate(), dateTime.toLocalTime(), d, v, a);
                     accountLedger.add(deposit);
                     buffWriter.write(deposit.toString() + "\n"); //this depends on transaction having a toString method
-                    buffWriter.flush();
                     System.out.println("your deposit has been successfully added!");
                     break;
                 case "P", "p":
@@ -78,10 +77,10 @@ public class Main {
                     Prompts.printPrompt(Prompts.addPaymentVendor);
                     String vp = scanner.nextLine();
                     LocalDateTime dateTimePay = LocalDateTime.now();
-                    Transaction payment = new Transaction(dateTimePay.toLocalDate(), dateTimePay.toLocalTime(), dp, vp, "-"ap);
+                    Transaction payment = new Transaction(dateTimePay.toLocalDate(), dateTimePay.toLocalTime(), dp, vp, ap);
                     accountLedger.add(payment);
                     buffWriter.write(payment.toString() + "\n");
-                    buffWriter.flush();
+                    buffWriter.close();
                     System.out.println("Your payment has been successfully added!");
                     break;
                 case "L", "l":
@@ -92,6 +91,11 @@ public class Main {
                         if (ledgerInput.equalsIgnoreCase("a")) {
                             for (Transaction ledger : accountLedger) {
                                 System.out.println(Prompts.ledger);
+                            }
+                        }
+                        if (ledgerInput.equalsIgnoreCase("d")){
+                            for (Transaction ledger : accountLedger){
+                                System.out.println();
                             }
                         }
                         if (accountLedger.isEmpty()) {
@@ -109,7 +113,8 @@ public class Main {
                 default:
                     System.out.println("Invalid input try again");
             }
-            buffWriter.close();
         }
+        buffWriter.close();
     }
+
 }
