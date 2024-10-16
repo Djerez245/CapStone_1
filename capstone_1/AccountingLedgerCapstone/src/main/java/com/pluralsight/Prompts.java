@@ -22,6 +22,7 @@ public class Prompts {
             D. Deposits
             P. Payments
             R. Reports
+            H. Go back to home page
             """;
     public static String reports = """
             ===========================
@@ -30,7 +31,7 @@ public class Prompts {
             1. Month to Date
             2. Previous Month
             3. Year to Date
-            4. Previous Month
+            4. Previous year
             5. Search by Vendor
             0. Back
             """;

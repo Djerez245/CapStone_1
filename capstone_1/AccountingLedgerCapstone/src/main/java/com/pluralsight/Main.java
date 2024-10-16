@@ -10,106 +10,92 @@ import java.time.LocalDate;
 
 public class Main {
 
-
     private static Scanner scanner;
     static ArrayList<Transaction> accountLedger = new ArrayList<>();
     static LocalDateTime dateTime = LocalDateTime.now();
     static DateTimeFormatter fmtDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     static DateTimeFormatter fmtTime = DateTimeFormatter.ofPattern("HH:mm:ss");
-
+    static DateTimeFormatter fmt3 = DateTimeFormatter.ofPattern("MM");
 
     public Main() throws IOException {
     }
 
-
-    private static void createTransactions() throws IOException {
-        FileReader fileReader = new FileReader("transactions.csv");
-        BufferedReader buffReader = new BufferedReader(fileReader);
-
-        String input;
-        while ((input = buffReader.readLine()) != null) {
-            String[] entry = input.split("\\|");
-            String date = entry[0];
-            String time = entry[1];
-            String description = entry[2];
-            String vendor = entry[3];
-            Double amount = Double.parseDouble(entry[4]);
-            Transaction transaction = new Transaction(LocalDate.parse(date, fmtDate), LocalTime.parse(time, fmtTime), description, vendor, amount);
-            accountLedger.add(transaction);
-        }
-    }
-
     public static void main(String[] args) throws IOException {
-        FileWriter fileWriter = new FileWriter("transactions.csv");
+        FileWriter fileWriter = new FileWriter("transactions.csv", true);
         BufferedWriter buffWriter = new BufferedWriter(fileWriter);
         Scanner scanner = new Scanner(System.in);
 
 
         boolean ledgerRunning = true;
-        createTransactions(); // loading transactions from csv file.
-        Prompts.printPrompt(Prompts.homeScreen); // prints home screen
-
+        AddDepositAndPaymentMethods.createTransactions(); // loading transactions from csv file.
 
         while (ledgerRunning) {
+
+            Prompts.printPrompt(Prompts.homeScreen); // prints home screen
             String userInput = scanner.nextLine(); // get user input
 
             switch (userInput) {
+
                 case "D", "d":
-                    Prompts.printPrompt(Prompts.addDepositDescription);
-                    String d = scanner.nextLine();
-                    Prompts.printPrompt(Prompts.addDepositAmount);
-                    double a = scanner.nextDouble();
-                    scanner.nextLine();
-                    Prompts.printPrompt(Prompts.addDepositVendor);
-                    String v = scanner.nextLine();
-                    LocalDateTime dateTime = LocalDateTime.now();
-                    Transaction deposit = new Transaction(dateTime.toLocalDate(), dateTime.toLocalTime(), d, v, a);
-                    accountLedger.add(deposit);
-                    buffWriter.write(deposit.toString() + "\n"); //this depends on transaction having a toString method
-                    System.out.println("your deposit has been successfully added!");
+                    boolean addToDeposit = true;
+                    while (addToDeposit) {
+                        AddDepositAndPaymentMethods.addDeposit();   // Method for user to add a deposit
+                        addToDeposit = false;
+                    }
                     break;
                 case "P", "p":
-                    Prompts.printPrompt(Prompts.makePaymentDescription);
-                    String dp = scanner.nextLine();
-                    Prompts.printPrompt(Prompts.makePaymentAmount);
-                    double ap = scanner.nextDouble();
-                    scanner.nextLine();
-                    Prompts.printPrompt(Prompts.addPaymentVendor);
-                    String vp = scanner.nextLine();
-                    LocalDateTime dateTimePay = LocalDateTime.now();
-                    Transaction payment = new Transaction(dateTimePay.toLocalDate(), dateTimePay.toLocalTime(), dp, vp, ap);
-                    accountLedger.add(payment);
-                    buffWriter.write(payment.toString() + "\n");
-                    buffWriter.close();
-                    System.out.println("Your payment has been successfully added!");
+                    boolean addPayment = true;
+                    while (addPayment) {
+                        AddDepositAndPaymentMethods.addPayment();   // method for user to add a payment
+                        addPayment = false;
+                    }
                     break;
                 case "L", "l":
                     boolean inLedger = true;
                     while (inLedger) {
-                        Prompts.printPrompt(Prompts.ledger);
-                        String ledgerInput = scanner.nextLine();
+                        Prompts.printPrompt(Prompts.ledger);    // prints out the ledger screen
+                        String ledgerInput = scanner.nextLine();    // gets user input for the ledger
                         if (ledgerInput.equalsIgnoreCase("a")) {
-                            for (Transaction ledger : accountLedger) {
-                                System.out.println(Prompts.ledger);
-                            }
+                            LedgerMethods.printAllTransactions();   // Method that prints all transactions
+                            break;
                         }
-                        if (ledgerInput.equalsIgnoreCase("d")){
-                            for (Transaction ledger : accountLedger){
-                                System.out.println();
-                            }
+                        if (ledgerInput.equalsIgnoreCase("d")) {
+                            LedgerMethods.printDeposits();  // Method that only prints deposits
+                            break;
+                        }
+                        if (ledgerInput.equalsIgnoreCase("p")) {
+                            LedgerMethods.printPayments();  // method that only prints payments
+                            break;
+                        }
+                        if (ledgerInput.equalsIgnoreCase("h")) { // for user to go back to the home screen
+                            break;
+                        }
+                        if (ledgerInput.equalsIgnoreCase("r"))
+                            Prompts.printPrompt(Prompts.reports); // Prints out the reports menu
+                        int reportInput = scanner.nextInt();
+                        scanner.nextLine();
+                        if (reportInput == 1) {
+                            LedgerMethods.monthToDate(); // Method to calculate month to date
+                        }
+                        if (reportInput == 2) {
+                            LedgerMethods.previousMonth(); // Method to calculate previous month
+                        }
+                        if (reportInput == 3){
+                            LedgerMethods.yearToDate(); // Method to calculate year to date
+                        }
+                        if (reportInput == 4){
+                            LedgerMethods.previousYear(); // Method to calculate previous year
+                        }
+                        if (reportInput == 5){
+                            LedgerMethods.vendorSearch(); // Method to search the ArrayList to find all transactions have the vendor that the user wants to search for
                         }
                         if (accountLedger.isEmpty()) {
-                            System.out.println(" Oh no! your ledger is empty");
-                            inLedger = false;
-                        }
-
-                        System.out.println("\nEnter X to back to home Screen");
-                        String exit = scanner.nextLine();
-                        if (exit.equalsIgnoreCase("x")) {
+                            System.out.println("\nOh no! your ledger is empty\n"); // If user doesn't have anything in their ledger they will be prompted that their ledger is empty
                             inLedger = false;
                         }
                     }
                     break;
+
                 default:
                     System.out.println("Invalid input try again");
             }
