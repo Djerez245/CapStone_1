@@ -6,9 +6,9 @@ public class Prompts {
     }
 
     public static String homeScreen = """
-            =======================================
-               Welcome to the Accounting Ledger
-            =======================================
+            ==============================================
+                  Welcome to the Accounting Ledger
+            ==============================================
             (D) Add Deposit
             (P) Make Payment
             (L) Ledger
@@ -36,6 +36,7 @@ public class Prompts {
             (5) Search by Vendor
             (0) Back
             """;
+
     public static String addDepositDescription = "Enter description: ";
 
     public static String addDepositAmount = "Enter Amount of deposit: ";

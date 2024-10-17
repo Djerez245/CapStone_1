@@ -83,16 +83,16 @@ public class LedgerMethods {
         System.out.println("Enter amount: ");
         double amount = scanner.nextDouble();
         scanner.nextLine();
-        LocalDate startDate = LocalDate.parse(startDateInput, Main.fmtDate);
+        LocalDate startDate = LocalDate.parse(startDateInput, Main.fmtDate); // made sure dates where entered correctly and easier to write the code
         LocalDate endDate = LocalDate.parse(endDateInput, Main.fmtDate);
         for (Transaction customSearch : Main.accountLedger){
-            LocalDate searchDate = customSearch.getDate();
-            String searchDescription = customSearch.getDescription();
-            double searchAmount = customSearch.getAmount();
-            if ((searchDate.isAfter(startDate) || searchDate.isEqual(startDate)) &&
-                    (searchDate.isBefore(endDate) || searchDate.isEqual(endDate)) &&
-                    (searchDescription.equalsIgnoreCase(description)) && searchAmount == amount) {
-                System.out.println(customSearch.toStringForConsole());
+            LocalDate searchDate = customSearch.getDate(); // made the code easier to write because of headaches
+            String searchDescription = customSearch.getDescription(); // made the code easier to write because of headaches
+            double searchAmount = customSearch.getAmount(); // made the code easier to write because of headaches
+            if ((searchDate.isAfter(startDate) || searchDate.isEqual(startDate)) && // Make sure start date falls under the correct parameters
+                    (searchDate.isBefore(endDate) || searchDate.isEqual(endDate)) && // Make sure end date falls under the correct parameters
+                    (searchDescription.equalsIgnoreCase(description)) && searchAmount == amount) { // make sure the description and amount falls under the correct parameters
+                System.out.println(customSearch.toStringForConsole()); // print out search
             }
         }
     }
