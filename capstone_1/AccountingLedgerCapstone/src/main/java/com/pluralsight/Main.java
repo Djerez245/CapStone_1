@@ -27,7 +27,8 @@ public class Main {
 
 
         boolean ledgerRunning = true;
-        AddDepositAndPaymentMethods.createTransactions();            // loading transactions from csv file.
+        AddDepositAndPaymentMethods.createTransactions();// loading transactions from csv file.
+        LedgerMethods.sortArray();
 
         while (ledgerRunning) {
 
@@ -60,10 +61,12 @@ public class Main {
                             break;
                         }
                         if (ledgerInput.equalsIgnoreCase("d")) {
+                            LedgerMethods.sortArray();
                             LedgerMethods.printDeposits();                      // Method that only prints deposits
                             break;
                         }
                         if (ledgerInput.equalsIgnoreCase("p")) {
+                            LedgerMethods.sortArray();
                             LedgerMethods.printPayments();                      // method that only prints payments
                             break;
                         }
@@ -102,7 +105,7 @@ public class Main {
                     ledgerRunning = false; //DOESN'T WORK EXACTLY RIGHT
 
                 default:
-                    System.out.println("Invalid input try again");
+                    System.out.println("Invalid input try again"); // if the user inputs an incorrect input then they are prompted to try again.
             }
         }
         buffWriter.close();
