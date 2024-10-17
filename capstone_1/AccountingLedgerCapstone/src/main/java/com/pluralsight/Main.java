@@ -96,16 +96,16 @@ public class Main {
                             LedgerMethods.vendorSearch();  // Method to search the ArrayList to find all transactions have the vendor that the user wants to search for
                         }                                  // DOESN'T SEARCH IF USER LEAVES AN INPUT BLANK
                         if (accountLedger.isEmpty()) {
-                            System.out.println("\nOh no!  your ledger is empty\n"); // If user doesn't have anything in their ledger they will be prompted that their ledger is empty
+                            System.out.println(Prompts.red + "\nOh no!  your ledger is empty\n" + Prompts.reset); // If user doesn't have anything in their ledger they will be prompted that their ledger is empty
                             inLedger = false;
                         }
                     }
                     break;
                 case "X", "x":
-                    ledgerRunning = false; //DOESN'T WORK EXACTLY RIGHT
-
+                    ledgerRunning = false;  //Ends the program
+                    break;
                 default:
-                    System.out.println("Invalid input try again"); // if the user inputs an incorrect input then they are prompted to try again.
+                    System.out.println(Prompts.red + "Invalid input try again" + Prompts.reset); // if the user inputs an incorrect input then they are prompted to try again.
             }
         }
         buffWriter.close();
