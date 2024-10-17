@@ -70,6 +70,9 @@ public class Main {
                         if (ledgerInput.equalsIgnoreCase("h")) { // for user to go back to the home screen
                             break;
                         }
+                        if (ledgerInput.equalsIgnoreCase("s")){
+                            LedgerMethods.customSearch();  // Method for user to do a custom Search
+                        }
                         if (ledgerInput.equalsIgnoreCase("r"))
                             Prompts.printPrompt(Prompts.reports); // Prints out the reports menu
                         int reportInput = scanner.nextInt();

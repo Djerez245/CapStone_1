@@ -9,31 +9,32 @@ public class Prompts {
             =======================================
                Welcome to the Accounting Ledger
             =======================================
-            D. Add Deposit
-            P. Make Payment
-            L. Ledger
-            X. Exit
+            (D) Add Deposit
+            (P) Make Payment
+            (L) Ledger
+            (X) Exit
             """;
     public static String ledger = """
             ===========================
                       Ledger
             ===========================
-            A. All
-            D. Deposits
-            P. Payments
-            R. Reports
-            H. Go back to home page
+            (A) All
+            (D) Deposits
+            (P) Payments
+            (R) Reports
+            (S) Custom Search
+            (H) Go back to home page
             """;
     public static String reports = """
             ===========================
                       Reports
             ===========================
-            1. Month to Date
-            2. Previous Month
-            3. Year to Date
-            4. Previous year
-            5. Search by Vendor
-            0. Back
+            (1) Month to Date
+            (2) Previous Month
+            (3) Year to Date
+            (4) Previous year
+            (5) Search by Vendor
+            (0) Back
             """;
     public static String addDepositDescription = "Enter description: ";
 

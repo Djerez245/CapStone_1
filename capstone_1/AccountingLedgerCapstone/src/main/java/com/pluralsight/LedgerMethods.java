@@ -72,5 +72,29 @@ public class LedgerMethods {
             }
         }
     }
+    public static void customSearch(){
+        Scanner scanner = new Scanner(System.in);
+        System.out.println("Enter start date(yyyy-MM-dd): ");
+        String startDateInput = scanner.nextLine();
+        System.out.println("Enter end date(yyyy-MM-dd): ");
+        String endDateInput = scanner.nextLine();
+        System.out.println("Enter Description: ");
+        String description = scanner.nextLine();
+        System.out.println("Enter amount: ");
+        double amount = scanner.nextDouble();
+        scanner.nextLine();
+        LocalDate startDate = LocalDate.parse(startDateInput, Main.fmtDate);
+        LocalDate endDate = LocalDate.parse(endDateInput, Main.fmtDate);
+        for (Transaction customSearch : Main.accountLedger){
+            LocalDate searchDate = customSearch.getDate();
+            String searchDescription = customSearch.getDescription();
+            double searchAmount = customSearch.getAmount();
+            if ((searchDate.isAfter(startDate) || searchDate.isEqual(startDate)) &&
+                    (searchDate.isBefore(endDate) || searchDate.isEqual(endDate)) &&
+                    (searchDescription.equalsIgnoreCase(description)) && searchAmount == amount) {
+                System.out.println(customSearch.toStringForConsole());
+            }
+        }
+    }
 
 }
