@@ -98,33 +98,76 @@ public class LedgerMethods {
         String endDateInput = scanner.nextLine();
         System.out.println("Enter Description: ");
         String description = scanner.nextLine();
+        System.out.println("Enter Vendor: ");
+        String vendor = scanner.nextLine();
         System.out.println("Enter amount: ");
         String amountString = scanner.nextLine();
         double amount = 0.0;
-        LocalDate startDate = null; // made sure dates where entered correctly and easier to write the code
+        LocalDate startDate = null;
         LocalDate endDate = null;
-        try{
-            amount = Double.parseDouble(amountString);
+
+
+        if (!startDateInput.isEmpty()){
+            startDate = LocalDate.parse(startDateInput);
         }
-        catch (Exception e) {
+        if (!endDateInput.isEmpty()){
+            endDate = LocalDate.parse(endDateInput);
         }
-        try{
-        startDate = LocalDate.parse(startDateInput); // made sure dates where entered correctly and easier to write the code
-        endDate = LocalDate.parse(endDateInput); }
-        catch(DateTimeParseException e){
-        }
-        for (Transaction customSearch : Main.accountLedger){
-            LocalDate searchDate = customSearch.getDate(); // made the code easier to write because of headaches
-            String searchDescription = customSearch.getDescription(); // made the code easier to write because of headaches
-            double searchAmount = customSearch.getAmount(); // made the code easier to write because of headaches
-            String stringSearchAmount = String.valueOf(searchAmount);
-            if ((startDate != null) || (searchDate.isAfter(startDate) || (searchDate.isEqual(startDate))) && // Make sure start date falls under the correct parameters
-                    ((endDate != null) || (searchDate.isAfter(endDate) || (searchDate.isEqual(endDate)) && // Make sure end date falls under the correct parameters
-                    (!searchDescription.equals("")) || (searchDescription.equalsIgnoreCase(description)) &&
-                            (stringSearchAmount.equals(amountString)) || (searchAmount == amount)))) { // make sure the description and amount falls under the correct parameters
-                System.out.println(customSearch.toStringForConsole()); // print out search
+        for (Transaction t : Main.accountLedger){
+            LocalDate searchDate = t.getDate();
+            String searchDescription = t.getDescription();
+            String searchVendor = t.getVendor();
+            double searchAmount = t.getAmount();
+
+            boolean dateMatches = true;
+            boolean descriptionMatches = true;
+            boolean vendorMatches = true;
+            boolean amountMatches = true;
+
+            if (startDate != null && searchDate.isBefore(startDate)){
+                dateMatches = false;
             }
+            if (endDate != null && searchDate.isAfter(endDate)){
+                dateMatches = false;
+            }
+            if (!description.isEmpty() && !searchDescription.equalsIgnoreCase(description)){
+                descriptionMatches = false;
+            }
+            if (!vendor.isEmpty() && !searchVendor.equalsIgnoreCase(vendor)){
+                vendorMatches = false;
+            }
+            if (searchAmount != amount){
+                amountMatches = false;
+            }
+            if(dateMatches && descriptionMatches && vendorMatches && amountMatches){
+                System.out.println(t.toStringForConsole());
+            }
+
+
         }
     }
 
 }
+//        try{
+//            amount = Double.parseDouble(amountString);
+//        }
+//        catch (Exception e) {
+//        }
+//        try{
+//        startDate = LocalDate.parse(startDateInput); // made sure dates where entered correctly and easier to write the code
+//        endDate = LocalDate.parse(endDateInput); }
+//        catch(DateTimeParseException e){
+//        }
+//        for (Transaction t : Main.accountLedger){
+//            LocalDate searchDate = t.getDate(); // made the code easier to write because of headaches
+//            String searchDescription = t.getDescription(); // made the code easier to write because of headaches
+//            double searchAmount = t.getAmount(); // made the code easier to write because of headaches
+//            String stringSearchAmount = String.valueOf(searchAmount);
+//
+//            if ((startDate == null) || (searchDate.isAfter(startDate) || (searchDate.isEqual(startDate))) && // Make sure start date falls under the correct parameters
+//                    ((endDate == null) || (searchDate.isBefore(endDate) || (searchDate.isEqual(endDate)) && // Make sure end date falls under the correct parameters
+//                    (description.equals("")) || (searchDescription.equalsIgnoreCase(description)) &&
+//                            (amount == 0) || (searchAmount == amount)))) { // make sure the description and amount falls under the correct parameters
+//                System.out.println(t.toStringForConsole()); // print out search
+//            }
+//        }
