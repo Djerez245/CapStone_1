@@ -24,9 +24,9 @@ public class LedgerMethods {
 
 
     public static void printDeposits() {
+        sortArray();
         for (Transaction deposits : Main.accountLedger) {
             if (deposits.getAmount() > 0) {
-                sortArray();
                 System.out.println(deposits.toStringForConsole());
             }
 
@@ -34,27 +34,27 @@ public class LedgerMethods {
     }
 
     public static void printPayments(){
+        sortArray();
         for (Transaction payments : Main.accountLedger) {
             if (payments.getAmount() < 0) {
-                sortArray();
                 System.out.println(payments.toStringForConsole());
             }
         }
     }
 
     public static void monthToDate(){
+        sortArray();
         for (Transaction mtd : Main.accountLedger) {
             if (mtd.getDate().getMonth().equals(LocalDate.now().getMonth())) {
-                sortArray();
                 System.out.println(mtd.toStringForConsole());
             }
         }
     }
 
     public static void yearToDate(){
+        sortArray();
         for (Transaction ytd : Main.accountLedger){
             if (ytd.getDate().getYear() == LocalDate.now().getYear()) {
-                sortArray();
                 System.out.println("\n" + ytd.toStringForConsole());
             }
         }
@@ -64,28 +64,28 @@ public class LedgerMethods {
         Scanner scanner = new Scanner(System.in);
         System.out.println("What vendor would you like to see?");
         String vSearch = scanner.nextLine();
+        sortArray();
         for(Transaction search : Main.accountLedger)
             if(search.getVendor().equalsIgnoreCase(vSearch)){
-                sortArray();
                 System.out.println(search.toStringForConsole());
             }
     }
 
     public static void previousYear(){
+        sortArray();
         for (Transaction previousYear : Main.accountLedger){
             if (previousYear.getDate().getYear() == (LocalDate.now().getYear())-1){
-                sortArray();
                 System.out.println("\n" + previousYear.toStringForConsole());
             }
         }
     }
 
     public static void previousMonth(){
+        sortArray();
         for (Transaction previousMonth : Main.accountLedger) {
             int a = Integer.parseInt(LocalDate.now().format(Main.fmt3));
             int b = Integer.parseInt(previousMonth.getDate().format(Main.fmt3));
             if ( b == a - 1){
-                sortArray();
                 System.out.println("\n" + previousMonth.toStringForConsole());
             }
         }
@@ -103,6 +103,12 @@ public class LedgerMethods {
         System.out.println("Enter amount: ");
         String amountString = scanner.nextLine();
         double amount = 0.0;
+        try{
+            amount = Double.parseDouble(amountString);
+        }
+        catch (Exception e){
+
+        }
         LocalDate startDate = null;
         LocalDate endDate = null;
 
