@@ -142,7 +142,7 @@ public class LedgerMethods {
             if (!vendor.isEmpty() && !searchVendor.equalsIgnoreCase(vendor)){
                 vendorMatches = false;
             }
-            if (searchAmount != amount){
+            if (!amountString.isEmpty() && searchAmount != amount){
                 amountMatches = false;
             }
             if(dateMatches && descriptionMatches && vendorMatches && amountMatches){
