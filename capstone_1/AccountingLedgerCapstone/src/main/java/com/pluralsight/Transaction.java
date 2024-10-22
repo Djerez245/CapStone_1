@@ -64,7 +64,7 @@ public class Transaction {
         return String.format("%s|%s|%s|%s|%.2f", fmtDate.format(date), fmtTime.format(time), description, vendor, amount);
     }
     public String toStringForConsole(){
-        return String.format("Date: %-1s|Time: %-1s|Description: %-16s|Vendor: %-12s|Amount: %.2f", fmtDate.format(date), fmtTime.format(time), description, vendor, amount);
+        return String.format("Date: %-1s|Time: %-10s|Description: %-16s|Vendor: %-20s|Amount: %.2f", fmtDate.format(date), fmtTime.format(time), description, vendor, amount);
     }
     static DateTimeFormatter fmtDate = DateTimeFormatter.ofPattern("yyyy-MM-dd");
     static DateTimeFormatter fmtTime = DateTimeFormatter.ofPattern("HH:mm:ss");

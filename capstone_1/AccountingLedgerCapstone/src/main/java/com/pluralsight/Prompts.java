@@ -5,6 +5,8 @@ public class Prompts {
      static String red = "\u001B[0;31m";
      static String green = "\u001B[0;32m";
      static String blue = "\u001B[0;34m";
+     static String cyan = "\u001b[36m";
+     static String lilac = "\u001b[95m";
 
 
 
@@ -12,7 +14,7 @@ public class Prompts {
         System.out.print(p);
     }
 
-    public static String homeScreen =  blue +"""
+    public static String homeScreen =  cyan +"""
             ==============================================
                   Welcome to the Accounting Ledger
             ==============================================
@@ -21,7 +23,7 @@ public class Prompts {
             (L) Ledger
             (X) Exit
             """ +reset;
-    public static String ledger = blue + """
+    public static String ledger = cyan + """
             ===========================
                       Ledger
             ===========================
@@ -32,7 +34,7 @@ public class Prompts {
             (S) Custom Search
             (H) Go back to home page
             """ + reset;
-    public static String reports = blue + """
+    public static String reports = cyan + """
             ===========================
                       Reports
             ===========================
